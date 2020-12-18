@@ -3,11 +3,39 @@ import appleImg from "./images/apple.png";
 import dotImg from "./images/dot.png";
 import headImg from "./images/head.png";
 
-const ALL_DOTS = 900;
 const MAX_RAND = 29;
 const SEGMENT_DIMENSION = 10;
 const C_HEIGHT = 300;
 const C_WIDTH = 300;
+const ALL_DOTS = C_WIDTH * C_HEIGHT;
+
+interface TwoDimensionalCoordinates {
+  x: number;
+  y: number;
+}
+
+/**
+ * Stores snake position in 2D by segment
+ */
+export class Position {
+  public x: Array<number>;
+  public y: Array<number>;
+  constructor(width: number, height: number) {
+    this.x = new Array(width);
+    this.y = new Array(height);
+  }
+  /**
+   * Returns `x,y` position of segment
+   * @param segment Snake's segment
+   */
+  query(segment: number): TwoDimensionalCoordinates {
+    return { x: this.x[segment], y: this.y[segment] };
+  }
+  update(segment: number, x: number, y: number) {
+    this.x[segment] = x;
+    this.y[segment] = y;
+  }
+}
 
 export class Apple {
   public x: number;
@@ -23,7 +51,8 @@ export class Apple {
 
 export class Snake {
   private readonly DEFAULT_SEGMENT_AMOUNT = 3;
-  private readonly START_POINT = 50;
+  private readonly HEAD = 0;
+  private readonly START_POSITION = 50;
   private canvas;
   private ctx;
 
@@ -31,19 +60,19 @@ export class Snake {
   private appleImg;
   private segmentImg;
 
-  private segments;
-  private apple = new Apple();
+  public segments: number = this.DEFAULT_SEGMENT_AMOUNT;
+
+  public apple = new Apple();
 
   private leftDirection = false;
   private rightDirection = true;
   private upDirection = false;
   private downDirection = false;
-  private inGame = true;
+  public inGame = true;
 
   private DELAY = 140;
 
-  private x = new Array(ALL_DOTS);
-  private y = new Array(ALL_DOTS);
+  public position = new Position(ALL_DOTS, ALL_DOTS);
 
   constructor() {
     this.canvas = document.getElementById("playground");
@@ -66,90 +95,102 @@ export class Snake {
     this.appleImg.src = appleImg;
   }
 
+  public spawnApple() {
+    this.apple.spawn();
+  }
+
   public spawnSnake() {
     this.segments = this.DEFAULT_SEGMENT_AMOUNT;
     for (let segment = 0; segment < this.segments; segment++) {
-      this.x[segment] = this.START_POINT - segment * SEGMENT_DIMENSION;
-      this.y[segment] = this.START_POINT;
+      this.position.update(
+        segment,
+        this.START_POSITION - segment * SEGMENT_DIMENSION,
+        this.START_POSITION
+      );
     }
   }
 
-  private draw() {
-    // Clear canvas
+  private render() {
     this.ctx.clearRect(0, 0, C_WIDTH, C_HEIGHT);
-
     if (!this.inGame) {
       this.gameOver();
       return;
     }
 
-    // Draw apple
     this.ctx.drawImage(this.appleImg, this.apple.x, this.apple.y);
-    // Draw snake
     for (let segment = 0; segment < this.segments; segment++) {
-      if (segment === 0) {
-        this.ctx.drawImage(this.headImg, this.x[segment], this.y[segment]);
+      const position = this.position.query(segment);
+      if (segment === this.HEAD) {
+        this.ctx.drawImage(this.headImg, position.x, position.y);
         continue;
       }
-      this.ctx.drawImage(this.segmentImg, this.x[segment], this.y[segment]);
+      this.ctx.drawImage(this.segmentImg, position.x, position.y);
     }
   }
 
   private gameOver(): void {
+    const GAME_OVER_TEXT = "Game Over";
     this.ctx.fillStyle = "white";
     this.ctx.textBaseline = "middle";
     this.ctx.textAlign = "center";
     this.ctx.font = "normal bold 18px serif";
-    this.ctx.fillText("Game Over", C_WIDTH / 2, C_HEIGHT / 2);
+    this.ctx.fillText(GAME_OVER_TEXT, C_WIDTH / 2, C_HEIGHT / 2);
   }
 
-  private detectAppleCollision(): void {
-    // If apple coordinates match snake head coordinates
-    if (this.x[0] == this.apple.x && this.y[0] == this.apple.y) {
+  public detectAppleCollision(): void {
+    if (
+      this.position.x[this.HEAD] == this.apple.x &&
+      this.position.y[this.HEAD] == this.apple.y
+    ) {
       this.segments++;
       this.spawnApple();
     }
   }
 
-  private move(): void {
+  public detectCollision(): void {
     for (let segment = this.segments; segment > 0; segment--) {
-      this.x[segment] = this.x[segment - 1];
-      this.y[segment] = this.y[segment - 1];
-    }
-    if (this.leftDirection) {
-      this.x[0] -= SEGMENT_DIMENSION;
-    }
-    if (this.rightDirection) {
-      this.x[0] += SEGMENT_DIMENSION;
-    }
-    if (this.upDirection) {
-      this.y[0] -= SEGMENT_DIMENSION;
-    }
-    if (this.downDirection) {
-      this.y[0] += SEGMENT_DIMENSION;
-    }
-  }
-
-  private detectCollision(): void {
-    for (let segment = this.segments; segment > 0; segment--) {
+      const headPosition = this.position.query(0);
+      const segmentPosition = this.position.query(segment);
       if (
-        segment > 4 &&
-        this.x[0] === this.x[segment] &&
-        this.y[0] === this.y[segment]
+        headPosition.x === segmentPosition.x &&
+        headPosition.y === segmentPosition.y
       ) {
         this.inGame = false;
+        return;
       }
-    }
-    if (this.y[0] >= C_HEIGHT || this.y[0] < 0) {
-      this.inGame = false;
-    }
-    if (this.x[0] >= C_WIDTH || this.x[0] < 0) {
-      this.inGame = false;
+      switch (true) {
+        case headPosition.y >= C_HEIGHT || headPosition.y < 0:
+          this.inGame = false;
+          break;
+        case headPosition.x >= C_WIDTH || headPosition.x < 0:
+          this.inGame = false;
+          break;
+        default:
+          this.inGame = true;
+      }
     }
   }
 
-  private spawnApple() {
-    this.apple.spawn();
+  private move(): void {
+    for (let segment = this.segments; segment > 0; segment--) {
+      this.position.update(
+        segment,
+        this.position.x[segment - 1],
+        this.position.y[segment - 1]
+      );
+    }
+    if (this.leftDirection) {
+      this.position.x[this.HEAD] -= SEGMENT_DIMENSION;
+    }
+    if (this.rightDirection) {
+      this.position.x[this.HEAD] += SEGMENT_DIMENSION;
+    }
+    if (this.upDirection) {
+      this.position.y[this.HEAD] -= SEGMENT_DIMENSION;
+    }
+    if (this.downDirection) {
+      this.position.y[this.HEAD] += SEGMENT_DIMENSION;
+    }
   }
 
   private loop() {
@@ -157,7 +198,7 @@ export class Snake {
       this.detectAppleCollision();
       this.detectCollision();
       this.move();
-      this.draw();
+      this.render();
       setTimeout(this.loop.bind(this), this.DELAY);
     }
   }
