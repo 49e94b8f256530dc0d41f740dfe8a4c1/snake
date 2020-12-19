@@ -199,7 +199,7 @@ export class Snake {
     }
   }
 
-  public onkeydown = function (keyboardEvent: KeyboardEvent) {
+  public onkeydown = (keyboardEvent: KeyboardEvent) => {
     const key = keyboardEvent.code;
     if (key === Key.ArrowLeft && !this.rightDirection) {
       this.leftDirection = true;
