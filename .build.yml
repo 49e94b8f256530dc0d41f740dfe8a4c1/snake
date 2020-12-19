@@ -17,3 +17,8 @@ tasks:
   - build: |
       cd snake
       npm run build
+  - deploy: |
+      cd snake
+      DEPLOY_HOST=159.69.157.37
+      DEPLOY_USER=ken
+      scp -o StrictHostKeyChecking=no -rv dist/* $DEPLOY_USER@$DEPLOY_HOST:/var/www/html/snake
