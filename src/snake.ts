@@ -76,7 +76,16 @@ export class Snake {
     this.loadAssets();
   }
 
+  public reset() {
+    this.inGame = true;
+    this.leftDirection = false;
+    this.rightDirection = true;
+    this.upDirection = false;
+    this.downDirection = false;
+  }
+
   public start() {
+    this.reset();
     this.spawnSnake();
     this.spawnApple();
     setTimeout(this.loop.bind(this), this.DELAY);
@@ -148,6 +157,7 @@ export class Snake {
       const headPosition = this.position.query(0);
       const segmentPosition = this.position.query(segment);
       if (
+        segment > this.DEFAULT_SEGMENT_AMOUNT + 1 &&
         headPosition.x === segmentPosition.x &&
         headPosition.y === segmentPosition.y
       ) {
