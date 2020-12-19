@@ -1,0 +1,19 @@
+image: archlinux
+sources:
+  - "https://github.com/49e94b8f256530dc0d41f740dfe8a4c1/snake.git"
+packages:
+  - npm
+  - nodejs-lts-fermium
+tasks:
+  - setup: |
+      node -v
+      npm -v
+  - install: |
+      cd snake
+      npm ci
+  - test: |
+      cd snake
+      npm test
+  - build: |
+      cd snake
+      npm run build
