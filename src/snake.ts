@@ -2,17 +2,13 @@ import { Key } from "ts-key-enum";
 import appleImg from "./images/apple.png";
 import dotImg from "./images/dot.png";
 import headImg from "./images/head.png";
+import { TwoDimensionalCoordinates } from "./utils";
 
 const MAX_RAND = 29;
 const SEGMENT_DIMENSION = 10;
 const C_HEIGHT = 300;
 const C_WIDTH = 300;
 const ALL_DOTS = C_WIDTH * C_HEIGHT;
-
-interface TwoDimensionalCoordinates {
-  x: number;
-  y: number;
-}
 
 /**
  * Stores snake position in 2D by segment
