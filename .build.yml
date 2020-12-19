@@ -12,6 +12,7 @@ tasks:
       npm -v
   - install: |
       cd snake
+      git checkout $GITHUB_REF
       npm ci
   - test: |
       cd snake
