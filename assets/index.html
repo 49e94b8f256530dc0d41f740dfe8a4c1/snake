@@ -3,6 +3,12 @@
   <head>
     <meta content="text/html;charset=utf-8" http-equiv="Content-Type" />
     <meta content="utf-8" http-equiv="encoding" />
+    <link rel="icon" href="./snake.gif" type="image/gif" />
+    <link
+      href="https://stackpath.bootstrapcdn.com/bootswatch/4.5.2/cerulean/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>snake</title>
     <style>
       canvas {
@@ -11,7 +17,50 @@
     </style>
   </head>
   <body>
-    <canvas id="playground" width="300" height="300"> </canvas>
+    <nav class="navbar navbar-dark bg-dark">
+      <a class="navbar-brand" href="#">
+        <img
+          src="./snake.gif"
+          width="24"
+          height="24"
+          class="d-inline-block align-top"
+          alt=""
+          loading="lazy"
+        />
+        snake
+      </a>
+    </nav>
+    <div class="container">
+      <div class="d-flex justify-content-center mt-2">
+        <div class="d-flex flex-column">
+          <button id="start-btn" class="btn btn-primary mb-2">Start</button>
+          <canvas id="playground" width="300" height="300"></canvas>
+          <div class="d-flex justify-content-center mt-2">
+            <button id="up-btn" class="btn btn-sm btn-primary w-25">
+              &uarr;
+            </button>
+          </div>
+          <div class="d-flex justify-content-between mt-2">
+            <button id="left-btn" class="btn btn-sm btn-primary w-25">
+              &larr;
+            </button>
+            <button id="down-btn" class="btn btn-sm btn-primary w-25">
+              &darr;
+            </button>
+            <button id="right-btn" class="btn btn-sm btn-primary w-25">
+              &rarr;
+            </button>
+          </div>
+          <div class="d-flex flex-column">
+            <span>Assets</span>
+            <ol>
+              <li>https://opengameart.org/content/a-snake</li>
+              <li>https://opengameart.org/content/apple</li>
+            </ol>
+          </div>
+        </div>
+      </div>
+    </div>
     <script src="./main-bundle.js"></script>
   </body>
 </html>
