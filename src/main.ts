@@ -1,5 +1,6 @@
 import { Key } from "ts-key-enum";
 import { Snake } from "./snake";
+import "./styles/styles.scss";
 
 const snake = new Snake();
 const startButton = document.getElementById("start-btn");
