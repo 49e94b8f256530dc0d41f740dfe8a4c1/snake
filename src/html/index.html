@@ -19,14 +19,6 @@
       canvas {
         background: grey;
       }
-      footer {
-        position: absolute;
-        bottom: 0;
-        width: 100%;
-        height: 60px;
-        line-height: 60px;
-        background-color: #f5f5f5;
-      }
     </style>
   </head>
   <body>
@@ -62,11 +54,7 @@
           <button id="start-btn" class="btn btn-sm btn-primary w-25 mb-2">
             Start
           </button>
-          <canvas
-            class="align-self-center"
-            id="playground"
-            style="max-width: 300px; min-height: 300px"
-          ></canvas>
+          <canvas id="playground" width="300" height="300"></canvas>
           <div class="d-flex justify-content-center mt-2">
             <button id="up-btn" class="btn btn-lg btn-primary w-25">
               &uarr;
@@ -83,18 +71,15 @@
               &rarr;
             </button>
           </div>
+          <div class="d-flex flex-column">
+            <span>Assets</span>
+            <ol>
+              <li>https://opengameart.org/content/a-snake</li>
+              <li>https://opengameart.org/content/apple</li>
+            </ol>
+          </div>
         </div>
       </div>
     </div>
-    <footer>
-      <div class="container">
-        <span class="text-muted"
-          >written by
-          <a href="https://github.com/49e94b8f256530dc0d41f740dfe8a4c1"
-            >ken.</a
-          ></span
-        >
-      </div>
-    </footer>
   </body>
 </html>
