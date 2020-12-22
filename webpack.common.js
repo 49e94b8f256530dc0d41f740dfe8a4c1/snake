@@ -26,10 +26,12 @@ module.exports = {
   },
   module: {
     rules: [
+      // TypeScript
       {
         test: /\.tsx?$/,
         loader: "ts-loader",
       },
+      // Files
       {
         test: /\.(png|jp(e*)g|svg)$/,
         use: [
@@ -41,6 +43,11 @@ module.exports = {
             },
           },
         ],
+      },
+      // SCSS
+      {
+        test: /\.(scss|css)$/,
+        use: ["style-loader", "css-loader", "sass-loader"],
       },
     ],
   },

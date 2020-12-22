@@ -1,0 +1,20 @@
+#github-ribbon {
+  position: absolute;
+  right: 0;
+  top: 0;
+}
+
+#game {
+  position: relative;
+  canvas#playground {
+    background: grey;
+  }
+  #controls {
+    position: absolute;
+    right: 0;
+    bottom: -45px;
+  }
+  button {
+    opacity: 0.6;
+  }
+}
