@@ -3,7 +3,7 @@ import { Snake } from "./snake";
 import "./styles/styles.scss";
 
 const snake = new Snake();
-const startButton = document.getElementById("start-btn");
+const playButton = document.getElementById("play-btn");
 const leftButton = document.getElementById("left-btn");
 const upButton = document.getElementById("up-btn");
 const downButton = document.getElementById("down-btn");
@@ -13,7 +13,7 @@ window.addEventListener("load", function () {
   onkeydown = (event) => snake.onkeydown(event);
 });
 
-startButton.addEventListener("click", () => {
+playButton.addEventListener("click", () => {
   snake.start();
 });
 
