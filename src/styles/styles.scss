@@ -11,10 +11,11 @@
   }
   #controls {
     position: absolute;
-    right: 0;
-    bottom: -45px;
-  }
-  button {
-    opacity: 0.6;
+    right: 15%;
+    bottom: -3%;
+    & button {
+      opacity: 0.6;
+      border-radius: 50%;
+    }
   }
 }

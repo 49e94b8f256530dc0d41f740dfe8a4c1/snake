@@ -8,6 +8,18 @@
       href="https://stackpath.bootstrapcdn.com/bootswatch/4.5.2/cerulean/bootstrap.min.css"
       rel="stylesheet"
     />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/fontawesome.min.css"
+      integrity="sha512-kJ30H6g4NGhWopgdseRb8wTsyllFUYIx3hiUwmGAkgA9B/JbzUBDQVr2VVlWGde6sdBVOG7oU8AL35ORDuMm8g=="
+      crossorigin="anonymous"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/solid.min.css"
+      integrity="sha512-SazV6tF6Ko4GxhyIZpKoXiKYndqzh7+cqxl9HDH7DGSpjkCN3QLqTAlhJHJnKxu3/2rfCsltzwFC4CmxZE1hPg=="
+      crossorigin="anonymous"
+    />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>snake</title>
   </head>
@@ -41,27 +53,28 @@
       /></a>
       <div class="d-flex justify-content-center mt-2">
         <div class="d-flex flex-column">
-          <button id="start-btn" class="btn btn-sm btn-primary w-25 mb-1">
-            Start
-          </button>
           <div id="game">
             <canvas id="playground" width="300" height="300"></canvas>
-
+            <button id="play-btn" class="btn btn-sm btn-primary w-25 mb-1">
+              Play
+            </button>
             <div id="controls">
               <div class="d-flex justify-content-center">
-                <button id="up-btn" class="btn btn-primary w-25">&uarr;</button>
-              </div>
-              <div class="d-flex justify-content-center">
-                <button id="left-btn" class="btn btn-primary w-25 mr-5">
-                  &larr;
-                </button>
-                <button id="right-btn" class="btn btn-primary w-25">
-                  &rarr;
+                <button id="up-btn" class="btn btn-primary">
+                  <i class="fas fa-angle-up"></i>
                 </button>
               </div>
               <div class="d-flex justify-content-center">
-                <button id="down-btn" class="btn btn-primary w-25">
-                  &darr;
+                <button id="left-btn" class="btn btn-primary mr-5">
+                  <i class="fas fa-angle-left"></i>
+                </button>
+                <button id="right-btn" class="btn btn-primary">
+                  <i class="fas fa-angle-right"></i>
+                </button>
+              </div>
+              <div class="d-flex justify-content-center">
+                <button id="down-btn" class="btn btn-primary">
+                  <i class="fas fa-angle-down"></i>
                 </button>
               </div>
             </div>
