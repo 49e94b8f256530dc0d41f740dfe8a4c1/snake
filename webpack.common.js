@@ -33,7 +33,7 @@ module.exports = {
       },
       // Files
       {
-        test: /\.(png|jp(e*)g|svg)$/,
+        test: /\.(png|jp(e*)g|svg|webp)$/,
         use: [
           {
             loader: "url-loader",
@@ -43,6 +43,15 @@ module.exports = {
             },
           },
         ],
+      },
+      {
+        test: /\.(eot|ttf|woff|woff2)(\?.*)?$/,
+        use: {
+          loader: "file-loader",
+          options: {
+            name: "[path][name].[ext]",
+          },
+        },
       },
       // SCSS
       {

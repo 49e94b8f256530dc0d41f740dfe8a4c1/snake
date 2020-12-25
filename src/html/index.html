@@ -1,25 +1,9 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
   <head>
     <meta content="text/html;charset=utf-8" http-equiv="Content-Type" />
     <meta content="utf-8" http-equiv="encoding" />
     <link rel="icon" href="./snake.gif" type="image/gif" />
-    <link
-      href="https://stackpath.bootstrapcdn.com/bootswatch/4.5.2/cerulean/bootstrap.min.css"
-      rel="stylesheet"
-    />
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/fontawesome.min.css"
-      integrity="sha512-kJ30H6g4NGhWopgdseRb8wTsyllFUYIx3hiUwmGAkgA9B/JbzUBDQVr2VVlWGde6sdBVOG7oU8AL35ORDuMm8g=="
-      crossorigin="anonymous"
-    />
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/solid.min.css"
-      integrity="sha512-SazV6tF6Ko4GxhyIZpKoXiKYndqzh7+cqxl9HDH7DGSpjkCN3QLqTAlhJHJnKxu3/2rfCsltzwFC4CmxZE1hPg=="
-      crossorigin="anonymous"
-    />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>
       Snake -an open-source Typescript clone of the classic arcade game
@@ -41,14 +25,14 @@
     <meta property="og:image" content="https://snake.psr42.com/arcade.jpg" />
   </head>
   <body>
-    <nav class="navbar navbar-dark bg-dark">
+    <nav class="navbar navbar-dark bg-primary">
       <a class="navbar-brand" href="#">
         <img
           src="./snake.gif"
           width="24"
           height="24"
           class="d-inline-block align-top"
-          alt=""
+          alt="snake-logo"
           loading="lazy"
         />
         snake
@@ -63,7 +47,7 @@
           loading="lazy"
           width="149"
           height="149"
-          src="https://github.blog/wp-content/uploads/2008/12/forkme_right_orange_ff7600.png?resize=149%2C149"
+          src="./forkme_right_orange_ff7600.webp"
           class="attachment-full size-full"
           alt="Fork me on GitHub"
           data-recalc-dims="1"
@@ -72,25 +56,45 @@
         <div class="d-flex flex-column">
           <div id="game">
             <canvas id="playground" width="300" height="300"></canvas>
-            <button id="play-btn" class="btn btn-sm btn-danger w-25 mb-1">
+            <button
+              aria-label="Play Button"
+              id="play-btn"
+              class="btn btn-sm btn-danger w-25 mb-1"
+            >
               Play
             </button>
             <div id="controls">
               <div class="d-flex justify-content-center">
-                <button id="up-btn" class="btn btn-success">
+                <button
+                  id="up-btn"
+                  aria-label="Up Button"
+                  class="btn btn-success"
+                >
                   <i class="fas fa-angle-up"></i>
                 </button>
               </div>
               <div class="d-flex justify-content-center">
-                <button id="left-btn" class="btn btn-success mr-5">
+                <button
+                  id="left-btn"
+                  aria-label="Left Button"
+                  class="btn btn-success mr-5"
+                >
                   <i class="fas fa-angle-left"></i>
                 </button>
-                <button id="right-btn" class="btn btn-success">
+                <button
+                  id="right-btn"
+                  aria-label="Right Button"
+                  class="btn btn-success"
+                >
                   <i class="fas fa-angle-right"></i>
                 </button>
               </div>
               <div class="d-flex justify-content-center">
-                <button id="down-btn" class="btn btn-success">
+                <button
+                  id="down-btn"
+                  aria-label="Down Button"
+                  class="btn btn-success"
+                >
                   <i class="fas fa-angle-down"></i>
                 </button>
               </div>
