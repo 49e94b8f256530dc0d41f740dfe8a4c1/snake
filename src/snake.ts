@@ -74,6 +74,7 @@ export class Snake {
     this.canvas = document.getElementById("playground");
     this.ctx = this.canvas.getContext("2d");
     this.loadAssets();
+    this.fillText("Press Play");
   }
 
   public reset() {
@@ -133,13 +134,16 @@ export class Snake {
     }
   }
 
-  private gameOver(): void {
-    const GAME_OVER_TEXT = "Game Over";
+  private fillText(text: string) {
     this.ctx.fillStyle = "white";
     this.ctx.textBaseline = "middle";
     this.ctx.textAlign = "center";
     this.ctx.font = "normal bold 18px serif";
-    this.ctx.fillText(GAME_OVER_TEXT, C_WIDTH / 2, C_HEIGHT / 2);
+    this.ctx.fillText(text, C_WIDTH / 2, C_HEIGHT / 2);
+  }
+
+  private gameOver(): void {
+    this.fillText("Game Over");
   }
 
   public detectAppleCollision(): void {
