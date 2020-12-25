@@ -49,8 +49,8 @@ export class Snake {
   private readonly DEFAULT_SEGMENT_AMOUNT = 3;
   private readonly HEAD = 0;
   private readonly START_POSITION = 50;
-  private canvas;
-  private ctx;
+  private canvas: HTMLCanvasElement;
+  public ctx: CanvasRenderingContext2D;
 
   private headImg;
   private appleImg;
@@ -70,8 +70,12 @@ export class Snake {
 
   public position = new Position(ALL_DOTS, ALL_DOTS);
 
-  constructor() {
-    this.canvas = document.getElementById("playground");
+  constructor(canvas?: HTMLCanvasElement) {
+    if (canvas) {
+      this.canvas = canvas;
+    } else {
+      this.canvas = document.getElementById("playground") as HTMLCanvasElement;
+    }
     this.ctx = this.canvas.getContext("2d");
     this.loadAssets();
     this.fillText("Press Play");

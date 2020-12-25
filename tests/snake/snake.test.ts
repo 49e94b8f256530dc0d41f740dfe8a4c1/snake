@@ -1,15 +1,11 @@
 import { expect } from "chai";
 import { Snake } from "../../src/snake";
-import jsdom from "mocha-jsdom";
 
 describe("Snake", function () {
-  jsdom({
-    html: `<canvas id="playground"></canvas>`,
-    url: "http://localhost",
-  });
   let snake: Snake;
   beforeEach(async () => {
-    snake = new Snake();
+    const canvas = document.createElement("canvas");
+    snake = new Snake(canvas);
   });
   it("should create", () => {
     expect(snake).to.not.be.undefined;
