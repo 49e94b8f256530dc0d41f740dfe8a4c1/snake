@@ -49,8 +49,8 @@ export class Snake {
   private readonly DEFAULT_SEGMENT_AMOUNT = 3;
   private readonly HEAD = 0;
   private readonly START_POSITION = 50;
-  private canvas;
-  private ctx;
+  private canvas: HTMLCanvasElement;
+  public ctx: CanvasRenderingContext2D;
 
   private headImg;
   private appleImg;
@@ -70,10 +70,15 @@ export class Snake {
 
   public position = new Position(ALL_DOTS, ALL_DOTS);
 
-  constructor() {
-    this.canvas = document.getElementById("playground");
+  constructor(canvas?: HTMLCanvasElement) {
+    if (canvas) {
+      this.canvas = canvas;
+    } else {
+      this.canvas = document.getElementById("playground") as HTMLCanvasElement;
+    }
     this.ctx = this.canvas.getContext("2d");
     this.loadAssets();
+    this.fillText("Press Play");
   }
 
   public reset() {
@@ -133,13 +138,16 @@ export class Snake {
     }
   }
 
-  private gameOver(): void {
-    const GAME_OVER_TEXT = "Game Over";
+  private fillText(text: string) {
     this.ctx.fillStyle = "white";
     this.ctx.textBaseline = "middle";
     this.ctx.textAlign = "center";
     this.ctx.font = "normal bold 18px serif";
-    this.ctx.fillText(GAME_OVER_TEXT, C_WIDTH / 2, C_HEIGHT / 2);
+    this.ctx.fillText(text, C_WIDTH / 2, C_HEIGHT / 2);
+  }
+
+  private gameOver(): void {
+    this.fillText("Game Over");
   }
 
   public detectAppleCollision(): void {
