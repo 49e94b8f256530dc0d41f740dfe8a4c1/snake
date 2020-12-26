@@ -8,40 +8,33 @@ const MAX_RAND = 29;
 const SEGMENT_DIMENSION = 10;
 const C_HEIGHT = 300;
 const C_WIDTH = 300;
-const ALL_DOTS = C_WIDTH * C_HEIGHT;
 
 /**
  * Stores snake position in 2D by segment
  */
 export class Position {
-  public x: Array<number>;
-  public y: Array<number>;
-  constructor(width: number, height: number) {
-    this.x = new Array(width);
-    this.y = new Array(height);
-  }
+  private map: Map<number, TwoDimensionalCoordinates> = new Map();
   /**
    * Returns `x,y` position of segment
    * @param segment Snake's segment
    */
   query(segment: number): TwoDimensionalCoordinates {
-    return { x: this.x[segment], y: this.y[segment] };
+    return this.map.get(segment);
   }
   update(segment: number, x: number, y: number) {
-    this.x[segment] = x;
-    this.y[segment] = y;
+    this.map.set(segment, { x: x, y: y });
   }
 }
 
 export class Apple {
-  public x: number;
-  public y: number;
+  public position = new Position();
 
   public spawn() {
     let r = Math.floor(Math.random() * MAX_RAND);
-    this.x = r * SEGMENT_DIMENSION;
+    const x = r * SEGMENT_DIMENSION;
     r = Math.floor(Math.random() * MAX_RAND);
-    this.y = r * SEGMENT_DIMENSION;
+    const y = r * SEGMENT_DIMENSION;
+    this.position.update(0, x, y);
   }
 }
 
@@ -50,7 +43,7 @@ export class Snake {
   private readonly HEAD = 0;
   private readonly START_POSITION = 50;
   private canvas: HTMLCanvasElement;
-  public ctx: CanvasRenderingContext2D;
+  private ctx: CanvasRenderingContext2D;
 
   private headImg;
   private appleImg;
@@ -68,7 +61,7 @@ export class Snake {
 
   private DELAY = 140;
 
-  public position = new Position(ALL_DOTS, ALL_DOTS);
+  public position = new Position();
 
   constructor(canvas?: HTMLCanvasElement) {
     if (canvas) {
@@ -91,7 +84,7 @@ export class Snake {
 
   public start() {
     this.reset();
-    this.spawnSnake();
+    this.spawn();
     this.spawnApple();
     setTimeout(this.loop.bind(this), this.DELAY);
   }
@@ -109,7 +102,7 @@ export class Snake {
     this.apple.spawn();
   }
 
-  public spawnSnake() {
+  public spawn() {
     this.segments = this.DEFAULT_SEGMENT_AMOUNT;
     for (let segment = 0; segment < this.segments; segment++) {
       this.position.update(
@@ -127,15 +120,16 @@ export class Snake {
       return;
     }
 
-    this.ctx.drawImage(this.appleImg, this.apple.x, this.apple.y);
-    for (let segment = 0; segment < this.segments; segment++) {
-      const position = this.position.query(segment);
-      if (segment === this.HEAD) {
+    const applePosition = this.apple.position.query(0);
+    this.ctx.drawImage(this.appleImg, applePosition.x, applePosition.y);
+    Array.apply(null, Array(this.segments)).forEach((_, index) => {
+      const position = this.position.query(index);
+      if (index === this.HEAD) {
         this.ctx.drawImage(this.headImg, position.x, position.y);
-        continue;
+        return;
       }
       this.ctx.drawImage(this.segmentImg, position.x, position.y);
-    }
+    });
   }
 
   private fillText(text: string) {
@@ -146,23 +140,23 @@ export class Snake {
     this.ctx.fillText(text, C_WIDTH / 2, C_HEIGHT / 2);
   }
 
-  private gameOver(): void {
-    this.fillText("Game Over");
-  }
-
   public detectAppleCollision(): void {
-    if (
-      this.position.x[this.HEAD] == this.apple.x &&
-      this.position.y[this.HEAD] == this.apple.y
-    ) {
+    const position = this.position.query(this.HEAD);
+    const applePosition = this.apple.position.query(0);
+    if (position.x == applePosition.x && position.y == applePosition.y) {
       this.segments++;
+      this.position.update(
+        this.segments,
+        position.x + SEGMENT_DIMENSION,
+        position.y + SEGMENT_DIMENSION
+      );
       this.spawnApple();
     }
   }
 
   public detectCollision(): void {
     for (let segment = this.segments; segment > 0; segment--) {
-      const headPosition = this.position.query(0);
+      const headPosition = this.position.query(this.HEAD);
       const segmentPosition = this.position.query(segment);
       if (
         segment > this.DEFAULT_SEGMENT_AMOUNT + 1 &&
@@ -186,25 +180,28 @@ export class Snake {
   }
 
   private move(): void {
-    for (let segment = this.segments; segment > 0; segment--) {
+    for (let index = this.segments; index > 0; index--) {
+      const previousSegmentCoordinates = this.position.query(index - 1);
       this.position.update(
-        segment,
-        this.position.x[segment - 1],
-        this.position.y[segment - 1]
+        index,
+        previousSegmentCoordinates.x,
+        previousSegmentCoordinates.y
       );
     }
+    const coordinates = this.position.query(this.HEAD);
     if (this.leftDirection) {
-      this.position.x[this.HEAD] -= SEGMENT_DIMENSION;
+      coordinates.x -= SEGMENT_DIMENSION;
     }
     if (this.rightDirection) {
-      this.position.x[this.HEAD] += SEGMENT_DIMENSION;
+      coordinates.x += SEGMENT_DIMENSION;
     }
     if (this.upDirection) {
-      this.position.y[this.HEAD] -= SEGMENT_DIMENSION;
+      coordinates.y -= SEGMENT_DIMENSION;
     }
     if (this.downDirection) {
-      this.position.y[this.HEAD] += SEGMENT_DIMENSION;
+      coordinates.y += SEGMENT_DIMENSION;
     }
+    this.position.update(this.HEAD, coordinates.x, coordinates.y);
   }
 
   private loop() {
@@ -240,4 +237,8 @@ export class Snake {
       this.leftDirection = false;
     }
   };
+
+  private gameOver(): void {
+    this.fillText("Game Over");
+  }
 }
