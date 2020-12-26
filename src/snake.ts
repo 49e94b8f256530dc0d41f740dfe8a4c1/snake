@@ -1,34 +1,15 @@
 import { Key } from "ts-key-enum";
+import { Character } from "./character";
 import appleImg from "./images/apple.png";
 import dotImg from "./images/dot.png";
 import headImg from "./images/head.png";
-import { TwoDimensionalCoordinates } from "./utils";
 
 const MAX_RAND = 29;
 const SEGMENT_DIMENSION = 10;
 const C_HEIGHT = 300;
 const C_WIDTH = 300;
 
-/**
- * Stores snake position in 2D by segment
- */
-export class Position {
-  private map: Map<number, TwoDimensionalCoordinates> = new Map();
-  /**
-   * Returns `x,y` position of segment
-   * @param segment Snake's segment
-   */
-  query(segment: number): TwoDimensionalCoordinates {
-    return this.map.get(segment);
-  }
-  update(segment: number, x: number, y: number) {
-    this.map.set(segment, { x: x, y: y });
-  }
-}
-
-export class Apple {
-  public position = new Position();
-
+export class Apple extends Character {
   public spawn() {
     let r = Math.floor(Math.random() * MAX_RAND);
     const x = r * SEGMENT_DIMENSION;
@@ -38,7 +19,7 @@ export class Apple {
   }
 }
 
-export class Snake {
+export class Snake extends Character {
   private readonly DEFAULT_SEGMENT_AMOUNT = 3;
   private readonly HEAD = 0;
   private readonly START_POSITION = 50;
@@ -53,17 +34,16 @@ export class Snake {
 
   public apple = new Apple();
 
-  private leftDirection = false;
-  private rightDirection = true;
-  private upDirection = false;
-  private downDirection = false;
+  public leftDirection = false;
+  public rightDirection = true;
+  public upDirection = false;
+  public downDirection = false;
   public inGame = true;
 
   private DELAY = 140;
 
-  public position = new Position();
-
   constructor(canvas?: HTMLCanvasElement) {
+    super();
     if (canvas) {
       this.canvas = canvas;
     } else {
@@ -179,7 +159,7 @@ export class Snake {
     }
   }
 
-  private move(): void {
+  public move(): void {
     for (let index = this.segments; index > 0; index--) {
       const previousSegmentCoordinates = this.position.query(index - 1);
       this.position.update(

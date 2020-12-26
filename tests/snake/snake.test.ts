@@ -1,4 +1,5 @@
 import { expect } from "chai";
+import { Key } from "ts-key-enum";
 import { Snake } from "../../src/snake";
 
 describe("Snake", function () {
@@ -56,5 +57,29 @@ describe("Snake", function () {
     snake.position.update(5, 50, 50);
     snake.detectCollision();
     expect(snake.inGame).to.equal(false);
+  });
+  it("should move snake correctly", () => {
+    snake.spawn();
+    snake.move();
+    expect(snake.position.query(0)).to.deep.equal({ x: 60, y: 50 });
+    snake.onkeydown(new KeyboardEvent("keydown", { code: Key.ArrowDown }));
+    snake.move();
+    expect(snake.position.query(0)).to.deep.equal({ x: 60, y: 60 });
+    snake.onkeydown(new KeyboardEvent("keydown", { code: Key.ArrowRight }));
+    snake.move();
+    expect(snake.position.query(0)).to.deep.equal({ x: 70, y: 60 });
+    snake.onkeydown(new KeyboardEvent("keydown", { code: Key.ArrowUp }));
+    snake.move();
+    expect(snake.position.query(0)).to.deep.equal({ x: 70, y: 50 });
+    snake.onkeydown(new KeyboardEvent("keydown", { code: Key.ArrowLeft }));
+    snake.move();
+    expect(snake.position.query(0)).to.deep.equal({ x: 60, y: 50 });
+  });
+  it("should reset corectly", () => {
+    snake.reset();
+    expect(snake.leftDirection).to.equal(false);
+    expect(snake.upDirection).to.equal(false);
+    expect(snake.rightDirection).to.equal(true);
+    expect(snake.downDirection).to.equal(false);
   });
 });

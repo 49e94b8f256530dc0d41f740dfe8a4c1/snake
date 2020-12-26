@@ -7,7 +7,7 @@ This project is mainly used to investigate TypeScript's state of the art. Webpac
 
 ## Demo
 
-[Live Demo](https://snake.psr42.com)
+[[Live Demo]](https://snake.psr42.com)
 
 ## Installation
 

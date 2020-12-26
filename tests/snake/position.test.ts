@@ -1,5 +1,5 @@
 import { expect } from "chai";
-import { Position } from "../../src/snake";
+import { Position } from "../../src/position";
 
 describe("Position", () => {
   let position: Position;
