@@ -3,6 +3,7 @@ import { Character } from "./character";
 import appleImg from "./images/apple.png";
 import dotImg from "./images/dot.png";
 import headImg from "./images/head.png";
+import { cloneDeep } from "lodash";
 
 const MAX_RAND = 29;
 const SEGMENT_DIMENSION = 10;
@@ -162,7 +163,7 @@ export class Snake extends Character {
   public move(): void {
     for (let index = this.segments; index > 0; index--) {
       const previousSegmentCoordinates = this.position.query(index - 1);
-      this.position.update(index, previousSegmentCoordinates);
+      this.position.update(index, cloneDeep(previousSegmentCoordinates));
     }
     const coordinates = this.position.query(this.HEAD);
     if (this.leftDirection) {

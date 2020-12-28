@@ -44,6 +44,7 @@
     "@fortawesome/fontawesome-free": "^5.15.1",
     "bootstrap": "^4.5.3",
     "bootswatch": "^4.5.3",
+    "lodash": "^4.17.20",
     "ts-key-enum": "^3.0.4"
   }
 }
