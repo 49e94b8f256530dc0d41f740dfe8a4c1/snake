@@ -15,7 +15,7 @@ export class Apple extends Character {
     const x = r * SEGMENT_DIMENSION;
     r = Math.floor(Math.random() * MAX_RAND);
     const y = r * SEGMENT_DIMENSION;
-    this.position.update(0, x, y);
+    this.position.update(0, { x, y });
   }
 }
 
@@ -85,11 +85,11 @@ export class Snake extends Character {
   public spawn() {
     this.segments = this.DEFAULT_SEGMENT_AMOUNT;
     for (let segment = 0; segment < this.segments; segment++) {
-      this.position.update(
-        segment,
-        this.START_POSITION - segment * SEGMENT_DIMENSION,
-        this.START_POSITION
-      );
+      const coordinates = {
+        x: this.START_POSITION - segment * SEGMENT_DIMENSION,
+        y: this.START_POSITION,
+      };
+      this.position.update(segment, coordinates);
     }
   }
 
@@ -125,11 +125,11 @@ export class Snake extends Character {
     const applePosition = this.apple.position.query(0);
     if (position.x == applePosition.x && position.y == applePosition.y) {
       this.segments++;
-      this.position.update(
-        this.segments,
-        position.x + SEGMENT_DIMENSION,
-        position.y + SEGMENT_DIMENSION
-      );
+      const coordinates = {
+        x: position.x + SEGMENT_DIMENSION,
+        y: position.y + SEGMENT_DIMENSION,
+      };
+      this.position.update(this.segments, coordinates);
       this.spawnApple();
     }
   }
@@ -162,11 +162,7 @@ export class Snake extends Character {
   public move(): void {
     for (let index = this.segments; index > 0; index--) {
       const previousSegmentCoordinates = this.position.query(index - 1);
-      this.position.update(
-        index,
-        previousSegmentCoordinates.x,
-        previousSegmentCoordinates.y
-      );
+      this.position.update(index, previousSegmentCoordinates);
     }
     const coordinates = this.position.query(this.HEAD);
     if (this.leftDirection) {
@@ -181,7 +177,7 @@ export class Snake extends Character {
     if (this.downDirection) {
       coordinates.y += SEGMENT_DIMENSION;
     }
-    this.position.update(this.HEAD, coordinates.x, coordinates.y);
+    this.position.update(this.HEAD, coordinates);
   }
 
   private loop() {
