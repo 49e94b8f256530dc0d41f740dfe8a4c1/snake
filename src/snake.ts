@@ -1,24 +1,15 @@
 import { Key } from "ts-key-enum";
 import { Character } from "./character";
-import appleImg from "./images/apple.png";
 import dotImg from "./images/dot.png";
 import headImg from "./images/head.png";
 import { cloneDeep } from "lodash";
+import { Apple } from "./apple";
 
-const MAX_RAND = 29;
 const SEGMENT_DIMENSION = 10;
 const C_HEIGHT = 300;
 const C_WIDTH = 300;
 
-export class Apple extends Character {
-  public spawn() {
-    let r = Math.floor(Math.random() * MAX_RAND);
-    const x = r * SEGMENT_DIMENSION;
-    r = Math.floor(Math.random() * MAX_RAND);
-    const y = r * SEGMENT_DIMENSION;
-    this.position.update(0, { x, y });
-  }
-}
+export class Game {}
 
 export class Snake extends Character {
   private readonly DEFAULT_SEGMENT_AMOUNT = 3;
@@ -28,7 +19,6 @@ export class Snake extends Character {
   private ctx: CanvasRenderingContext2D;
 
   private headImg;
-  private appleImg;
   private segmentImg;
 
   public segments: number = this.DEFAULT_SEGMENT_AMOUNT;
@@ -75,8 +65,6 @@ export class Snake extends Character {
     this.headImg.src = headImg;
     this.segmentImg = new window.Image();
     this.segmentImg.src = dotImg;
-    this.appleImg = new window.Image();
-    this.appleImg.src = appleImg;
   }
 
   public spawnApple() {
@@ -102,7 +90,7 @@ export class Snake extends Character {
     }
 
     const applePosition = this.apple.position.query(0);
-    this.ctx.drawImage(this.appleImg, applePosition.x, applePosition.y);
+    this.ctx.drawImage(this.apple.img, applePosition.x, applePosition.y);
     Array.apply(null, Array(this.segments)).forEach((_, index) => {
       const position = this.position.query(index);
       if (index === this.HEAD) {

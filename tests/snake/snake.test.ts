@@ -15,10 +15,6 @@ describe("Snake", function () {
     snake.spawn();
     expect(snake.position).to.not.be.undefined;
   });
-  it("should spawn apple", () => {
-    snake.spawnApple();
-    expect(snake.apple.position.query(0)).to.have.keys("x", "y");
-  });
   it("should detect collisions", () => {
     // Spawn apple
     snake.spawnApple();
